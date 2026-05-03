@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Gaming Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00f3ff;
+            --secondary: #ff007f;
+            --bg-black: #08080a;
+            --surface: #121214;
+        }
+        .sakura-theme { --primary: #ffb7c5; --secondary: #ff4d6d; --bg-black: #1a0f12; --surface: #2d1b1f; }
+        .gold-theme { --primary: #ffcc33; --secondary: #aa8822; --bg-black: #13110a; --surface: #221f14; }
+        .light-theme { --primary: #0066ff; --secondary: #d0005f; --bg-black: #f0f2f5; --surface: #ffffff; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: var(--bg-black);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            transition: 0.3s;
+        }
+        .screen {
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+            background: var(--surface);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .hidden { display: none !important; }
+        h1, h2 { font-family: 'Orbitron', sans-serif; color: var(--primary); margin-bottom: 20px; }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 12px 0;
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: 0.3s;
+            font-size: 16px;
+        }
+        .btn:hover {
+            background: var(--primary);
+            color: black;
+            box-shadow: 0 0 20px var(--primary);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 25px 0;
+        }
+        .cell {
+            height: 100px;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid #333;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.8rem;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .cell:hover { background: rgba(255,255,255,0.1); }
+
+        #result-panel, #word-result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.1);
+            font-weight: bold;
+            border-left: 5px solid var(--secondary);
+        }
+
+        .word-display {
+            font-size: 2.2rem;
+            letter-spacing: 12px;
+            margin: 25px 0;
+            font-family: 'Orbitron';
+            color: var(--primary);
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            align-items: center;
+        }
+
+        /* Creator Name Style */
+        .creator {
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 14px;
+            color: #aaa;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .creator span {
+            color: var(--primary);
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Menu Screen -->
+    <div id="menu-screen" class="screen">
+        <h1>GAMING HUB</h1>
+        <button class="btn" onclick="startTTT()">🎮 Play Tic Tac Toe</button>
+        <button class="btn" onclick="startWordGame()">🔤 Play Word Guess</button>
+        <button class="btn" onclick="showScreen('history')">📜 History</button>
+        <button class="btn" onclick="showScreen('settings')">⚙️ Settings</button>
+
+        <!-- Aapka Naam -->
+        <div class="creator">
+            Created by <span>AREEBA SARWAR SHAHEEN</span><br>
+            <small>CS Gaming Hub</small>
+        </div>
+    </div>
+
+    <!-- Tic Tac Toe Screen -->
+    <div id="ttt-screen" class="screen hidden">
+        <h2 id="ttt-status">Turn: X</h2>
+        <div class="grid" id="board">
+            <div class="cell" onclick="handleCell(0)"></div>
+            <div class="cell" onclick="handleCell(1)"></div>
+            <div class="cell" onclick="handleCell(2)"></div>
+            <div class="cell" onclick="handleCell(3)"></div>
+            <div class="cell" onclick="handleCell(4)"></div>
+            <div class="cell" onclick="handleCell(5)"></div>
+            <div class="cell" onclick="handleCell(6)"></div>
+            <div class="cell" onclick="handleCell(7)"></div>
+            <div class="cell" onclick="handleCell(8)"></div>
+        </div>
+        <div id="result-panel" class="hidden"></div>
+        <button class="btn" onclick="resetTTT()">Play Again</button>
+        <button class="btn" onclick="showScreen('menu')">Back to Menu</button>
+    </div>
+
+    <!-- Word Guess Screen -->
+    <div id="word-screen" class="screen hidden">
+        <h2>Word Guess</h2>
+        <div class="word-display" id="wordContainer">_ _ _ _ _</div>
+        <p>Lives: <span id="livesCount" style="color:var(--secondary)">6</span></p>
+       
+        <div style="margin: 25px 0;">
+            <input type="text" id="letterInput" maxlength="1"
+                   style="width:60px; padding:12px; text-align:center; background:none; border:2px solid var(--primary); color:white; font-size:1.8rem; border-radius:8px;">
+            <button class="btn" style="display:inline; width:auto; padding: 12px 25px;" onclick="makeWordGuess()">Guess</button>
+        </div>
+       
+        <div id="word-result" class="hidden"></div>
+        <button class="btn" onclick="initWordGame()">New Word</button>
+        <button class="btn" onclick="showScreen('menu')">Back to Menu</button>
+    </div>
+
+    <!-- History Screen -->
+    <div id="history-screen" class="screen hidden">
+        <h2>Match History</h2>
+        <div id="history-content" style="text-align:left; margin:20px 0; max-height:320px; overflow-y:auto; font-size: 0.92rem;"></div>
+        <button class="btn" onclick="localStorage.removeItem('game_logs_v4'); renderHistory();">Clear History</button>
+        <button class="btn" onclick="showScreen('menu')">Back</button>
+    </div>
+
+    <!-- Settings Screen -->
+    <div id="settings-screen" class="screen hidden">
+        <h2>Settings</h2>
+        <div class="row"><span>Sound Effects</span><input type="checkbox" id="soundOn" checked></div>
+        <div class="row">
+            <span>Theme</span>
+            <select onchange="changeTheme(this.value)">
+                <option value="default">Neon Blue</option>
+                <option value="sakura">Sakura Pink</option>
+                <option value="gold">Royal Gold</option>
+                <option value="light">Light Mode</option>
+            </select>
+        </div>
+        <button class="btn" onclick="showScreen('menu')">Back</button>
+    </div>
+
+    <script>
+        let currentGame = '';
+        let gameMode = 'computer';
+        let boardArr = Array(9).fill("");
+        let currentPlayer = "X";
+        let humanSymbol = "X";
+        let aiSymbol = "O";
+        let active = true;
+
+        const words = ["PYTHON", "GITHUB", "REACTJS", "CODING", "LOGIC", "HTMLCSS", "JAVASCRIPT", "FRONTEND"];
+        let targetWord = "";
+        let guessedLetters = [];
+        let lives = 6;
+
+        function showScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+            document.getElementById(id + '-screen').classList.remove('hidden');
+            if(id === 'history') renderHistory();
+        }
+
+        function changeTheme(theme) {
+            document.body.className = '';
+            if(theme !== 'default') document.body.classList.add(theme + '-theme');
+        }
+
+        // ================= TIC TAC TOE =================
+        function startTTT() {
+            currentGame = 'ttt';
+            showScreen('ttt');
+            resetTTT();
+        }
+
+        function resetTTT() {
+            boardArr = Array(9).fill("");
+            active = true;
+            currentPlayer = "X";
+            document.getElementById('result-panel').classList.add('hidden');
+            document.getElementById('ttt-status').innerText = `Turn: ${currentPlayer}`;
+            renderBoard();
+           
+            if(gameMode === 'computer' && currentPlayer === aiSymbol) {
+                setTimeout(bestMove, 400);
+            }
+        }
+
+        function handleCell(i) {
+            if(boardArr[i] === "" && active) {
+                makeMove(i, currentPlayer);
+                if(!checkGameOver()) {
+                    currentPlayer = currentPlayer === "X" ? "O" : "X";
+                    document.getElementById('ttt-status').innerText = `Turn: ${currentPlayer}`;
+                   
+                    if(gameMode === 'computer' && currentPlayer === aiSymbol) {
+                        active = false;
+                        setTimeout(bestMove, 500);
+                    }
+                }
+            }
+        }
+
+        function makeMove(index, player) {
+            boardArr[index] = player;
+            renderBoard();
+        }
+
+        function renderBoard() {
+            const cells = document.querySelectorAll('.cell');
+            boardArr.forEach((v, i) => {
+                cells[i].innerText = v;
+                cells[i].style.color = v === 'X' ? 'var(--primary)' : 'var(--secondary)';
+            });
+        }
+
+        function checkGameOver() {
+            let win = checkWinnerStatic(boardArr);
+            if(win) {
+                announceTTT(win === "Draw" ? "It's a Draw!" : `${win} Wins!`, win);
+                return true;
+            }
+            return false;
+        }
+
+        function checkWinnerStatic(b) {
+            const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+            for(let s of wins) {
+                if(b[s[0]] && b[s[0]] === b[s[1]] && b[s[0]] === b[s[2]]) return b[s[0]];
+            }
+            return b.includes("") ? null : "Draw";
+        }
+
+        function bestMove() {
+            let bestScore = -Infinity;
+            let move;
+            for(let i = 0; i < 9; i++) {
+                if(boardArr[i] === "") {
+                    boardArr[i] = aiSymbol;
+                    let score = minimax(boardArr, 0, false);
+                    boardArr[i] = "";
+                    if(score > bestScore) {
+                        bestScore = score;
+                        move = i;
+                    }
+                }
+            }
+            makeMove(move, aiSymbol);
+            if(!checkGameOver()) {
+                currentPlayer = humanSymbol;
+                document.getElementById('ttt-status').innerText = `Turn: ${humanSymbol}`;
+                active = true;
+            }
+        }
+
+        function minimax(board, depth, isMaximizing) {
+            let result = checkWinnerStatic(board);
+            if (result !== null) {
+                if (result === aiSymbol) return 10 - depth;
+                if (result === humanSymbol) return depth - 10;
+                return 0;
+            }
+            if (isMaximizing) {
+                let bestScore = -Infinity;
+                for (let i = 0; i < 9; i++) {
+                    if (board[i] === "") {
+                        board[i] = aiSymbol;
+                        let score = minimax(board, depth + 1, false);
+                        board[i] = "";
+                        bestScore = Math.max(score, bestScore);
+                    }
+                }
+                return bestScore;
+            } else {
+                let bestScore = Infinity;
+                for (let i = 0; i < 9; i++) {
+                    if (board[i] === "") {
+                        board[i] = humanSymbol;
+                        let score = minimax(board, depth + 1, true);
+                        board[i] = "";
+                        bestScore = Math.min(score, bestScore);
+                    }
+                }
+                return bestScore;
+            }
+        }
+
+        function announceTTT(msg, winner) {
+            const panel = document.getElementById('result-panel');
+            panel.innerText = msg;
+            panel.classList.remove('hidden');
+            active = false;
+           
+            let winnerName = (winner === "Draw") ? "Nobody" :
+                            (gameMode === 'computer' && winner === aiSymbol ? "Computer" : "You");
+           
+            saveLog("Tic-Tac-Toe", winnerName, winnerName === "You" ? "Computer" : "You");
+        }
+
+        // ================= WORD GUESS =================
+        function startWordGame() {
+            currentGame = 'word';
+            showScreen('word');
+            initWordGame();
+        }
+
+        function initWordGame() {
+            targetWord = words[Math.floor(Math.random() * words.length)];
+            guessedLetters = [];
+            lives = 6;
+            document.getElementById('word-result').classList.add('hidden');
+            document.getElementById('livesCount').innerText = lives;
+            updateWordDisplay();
+        }
+
+        function updateWordDisplay() {
+            let display = targetWord.split('').map(char =>
+                guessedLetters.includes(char) ? char : "_"
+            ).join(" ");
+            document.getElementById('wordContainer').innerText = display;
+           
+            if(!display.includes("_")) {
+                document.getElementById('word-result').innerText = "🎉 Congratulations! You Won!";
+                document.getElementById('word-result').classList.remove('hidden');
+                saveLog("Word Guess", "You", "Computer");
+            }
+        }
+
+        function makeWordGuess() {
+            let input = document.getElementById('letterInput').value.toUpperCase().trim();
+            document.getElementById('letterInput').value = "";
+           
+            if(!input || guessedLetters.includes(input)) return;
+            guessedLetters.push(input);
+           
+            if(!targetWord.includes(input)) {
+                lives--;
+                document.getElementById('livesCount').innerText = lives;
+                if(lives <= 0) {
+                    document.getElementById('word-result').innerText = `Game Over! Word was: ${targetWord}`;
+                    document.getElementById('word-result').classList.remove('hidden');
+                    saveLog("Word Guess", "Computer", "You");
+                }
+            }
+            updateWordDisplay();
+        }
+
+        // ================= HISTORY =================
+        function saveLog(game, winner, loser) {
+            let logs = JSON.parse(localStorage.getItem('game_logs_v4')) || [];
+            const now = new Date();
+            logs.unshift({
+                date: now.toLocaleDateString(),
+                time: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                game: game,
+                winner: winner,
+                loser: loser
+            });
+            localStorage.setItem('game_logs_v4', JSON.stringify(logs.slice(0, 50)));
+        }
+
+        function renderHistory() {
+            let logs = JSON.parse(localStorage.getItem('game_logs_v4')) || [];
+            const container = document.getElementById('history-content');
+           
+            if(logs.length === 0) {
+                container.innerHTML = "<p style='text-align:center; color:#888;'>No matches played yet.</p>";
+                return;
+            }
+            container.innerHTML = logs.map(l => `
+                <div style="border-bottom:1px solid #333; padding:12px; margin-bottom:8px; background:rgba(255,255,255,0.03)">
+                    <small style="color:#888">${l.date} ${l.time}</small><br>
+                    <b>${l.game}</b>: <span style="color:var(--primary)">${l.winner}</span> beat ${l.loser}
+                </div>
+            `).join('');
+        }
+
+        // Initialize
+        renderHistory();
+    </script>
+</body>
+</html>
