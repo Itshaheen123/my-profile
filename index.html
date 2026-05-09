@@ -113,7 +113,7 @@
 
         .btn {
             display: inline-block;
-            padding: 15px 35px;
+            padding: 12px 30px;
             background-color: var(--accent-color);
             color: var(--text-light);
             font-weight: 600;
@@ -121,6 +121,7 @@
             transition: background-color 0.3s ease, transform 0.3s ease;
             border: none;
             cursor: pointer;
+            margin-top: 10px;
         }
 
         .btn:hover {
@@ -134,9 +135,7 @@
             font-size: 36px;
             margin-bottom: 60px;
             position: relative;
-            display: inline-block;
-            left: 50%;
-            transform: translateX(-50%);
+            display: block;
         }
 
         .section-title::after {
@@ -154,11 +153,10 @@
             background-color: #fff;
         }
 
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 50px;
-            align-items: center;
+        .about-text {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         .about-text p {
@@ -169,7 +167,7 @@
         /* Projects Section Styling */
         .projects {
             padding: 100px 0;
-            background-color: #fff;
+            background-color: #f9f9f9;
         }
 
         .project-grid {
@@ -179,13 +177,16 @@
         }
 
         .project-card {
-            background-color: #f9f9f9;
+            background-color: #fff;
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0,0,0,0.08);
             transition: transform 0.3s ease;
             text-align: center;
-            padding: 20px;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .project-card:hover {
@@ -193,13 +194,21 @@
         }
 
         .project-card h3 {
-            margin: 15px 0;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+
+        .project-card p {
+            font-size: 15px;
+            color: #666;
+            flex-grow: 1;
+            margin-bottom: 20px;
         }
 
         /* Skills Section Styling */
         .skills {
             padding: 100px 0;
-            background-color: #f9f9f9;
+            background-color: #fff;
         }
 
         .skills-grid {
@@ -209,11 +218,12 @@
         }
 
         .skill-card {
-            background-color: #fff;
+            background-color: #f9f9f9;
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
         }
 
         .skill-card:hover {
@@ -230,7 +240,7 @@
         /* Contact Section Styling */
         .contact {
             padding: 100px 0;
-            background-color: #fff;
+            background-color: #f9f9f9;
             text-align: center;
         }
 
@@ -274,7 +284,6 @@
         /* Responsive Design */
         @media (max-width: 768px) {
             .hero h1 { font-size: 40px; }
-            .about-content { grid-template-columns: 1fr; }
             nav ul { gap: 15px; }
             nav a { font-size: 14px; }
         }
@@ -309,27 +318,36 @@
     <section id="about" class="about">
         <div class="container">
             <h2 class="section-title">About Me</h2>
-            <div class="about-content">
-                <div class="about-text">
-                    <p>Hello! I am a passionate Computer Science student and a skilled Full Stack Developer. I thrive on turning complex problems into elegant, functional websites. My goal is to build digital solutions that are not just efficient but also user-friendly.</p>
-                    <p>Recently, I've expanded my skill set by completing a comprehensive Python course and successfully developing a new game. I love exploring new technologies and am dedicated to writing clean, well-documented code that aligns perfectly with your requirements.</p>
-                </div>
+            <div class="about-text">
+                <p>Hello! I am a passionate Computer Science student and a skilled Full Stack Developer. I thrive on turning complex problems into elegant, functional websites. My goal is to build digital solutions that are not just efficient but also user-friendly.</p>
+                <p>Recently, I've expanded my skill set by completing a comprehensive Python course and successfully developing several interactive web applications. I love exploring new technologies and am dedicated to writing clean, well-documented code that aligns perfectly with modern requirements.</p>
             </div>
         </div>
     </section>
 
-    <!-- NEW PROJECTS SECTION -->
     <section id="projects" class="projects">
         <div class="container">
             <h2 class="section-title">Latest Work</h2>
             <div class="project-grid">
+                
                 <div class="project-card">
                     <h3>Shaheen Game Zone</h3>
-                    <p>A custom-built interactive gaming experience developed using modern web technologies and logic.</p>
-                    <br>
-                    <a href="game.html" target="_blank" class="btn">Play Game</a>
+                    <p>A custom-built interactive gaming experience developed using modern web technologies and complex logic.</p>
+                    <a href="https://itshaheen123.github.io/shaheen_game_zone/" target="_blank" class="btn">Play Game</a>
                 </div>
-                <!-- You can add more project-cards here in the future -->
+
+                <div class="project-card">
+                    <h3>Image Gallery</h3>
+                    <p>A modern, responsive gallery featuring category filtering, a custom lightbox, and interactive animations for a premium user experience.</p>
+                    <a href="https://itshaheen123.github.io/CodeAlpha_image_gallery/" target="_blank" class="btn">View Project</a>
+                </div>
+
+                <div class="project-card">
+                    <h3>Glassmorphism Calculator</h3>
+                    <p>A futuristic calculator with advanced mathematical logic, keyboard support, and a sleek dark-mode UI design.</p>
+                    <a href="https://itshaheen123.github.io/CodeAlpha_Calculator/" target="_blank" class="btn">View Project</a>
+                </div>
+
             </div>
         </div>
     </section>
@@ -340,19 +358,19 @@
             <div class="skills-grid">
                 <div class="skill-card">
                     <h3>Full Stack Development</h3>
-                    <p>Expertise in both frontend (HTML, CSS, JavaScript) and backend technologies to build complete web applications from scratch.</p>
+                    <p>Expertise in both frontend (HTML, CSS, JavaScript) and backend technologies to build complete web applications.</p>
                 </div>
                 <div class="skill-card">
                     <h3>Python & Logic</h3>
-                    <p>Strong foundation in Python programming for automation, backend logic, data processing, and scripting.</p>
+                    <p>Strong foundation in Python for automation, backend logic, and scripting for various technical solutions.</p>
                 </div>
                 <div class="skill-card">
                     <h3>Game Development</h3>
-                    <p>Experience in designing and developing engaging games, focusing on application logic and user interaction.</p>
+                    <p>Experience in designing and developing engaging games, focusing on application logic and interactive user interfaces.</p>
                 </div>
                 <div class="skill-card">
-                    <h3>Professional Workflow</h3>
-                    <p>I focus on creating detailed documentation for every project and strictly follow instructions to ensure your vision is realized.</p>
+                    <h3>UI/UX Design</h3>
+                    <p>Focus on creating responsive, visually appealing, and user-friendly designs that work seamlessly across all devices.</p>
                 </div>
             </div>
         </div>
@@ -375,4 +393,4 @@
     </footer>
 
 </body>
-</html>
+</html>s
